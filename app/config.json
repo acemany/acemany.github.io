@@ -1,0 +1,15 @@
+{
+    "pic_per_page": 50,
+    "tape_scale": 1.05,
+    "tags": [
+        "ffffbf"
+    ],
+    "neg_tags": ["animated"],
+    "path": ".homework",
+    "font_size": 18,
+    "clear_cache": false,
+    "shuffle_on_load": true,
+    "from_folder": false,
+    "autoload": true,
+    "reputation": 25
+}
