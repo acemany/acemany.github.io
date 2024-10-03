@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request
+from fake_useragent import UserAgent
+from requests import get as r_get
 from json import load, dump
 from pathlib import Path
 import os
@@ -8,6 +10,7 @@ APP_PATH: Path = Path(__file__).parent
 print(f'Running in {APP_PATH} directory.')
 CFG_FILE = APP_PATH/"config.json"
 IMAGE_FOLDER = APP_PATH/'images/'
+userAgent: UserAgent = UserAgent()
 
 app = Flask(__name__)
 
@@ -41,7 +44,14 @@ with open(CFG_FILE, "r") as f:
 
 @app.route('/', methods=['GET'])
 def index():
-    images = os.listdir(IMAGE_FOLDER)
+    images = []  # os.listdir(IMAGE_FOLDER)
+
+    link34 = f"https://api.r34.app/booru/rule34.xxx/posts?baseEndpoint=rule34.xxx&" + '&'.join((f"{i}={j}" for i, j in request.args.items()))
+    res = r_get(link34, headers={'User-Agent': userAgent.ff}).json()
+    # links = [res["links"]['first'], res["links"]['prev'], res["links"]['self'], res["links"]['next'], res["links"]['last']]
+
+    for messag in res["data"]:
+        images.append(messag['low_res_file']['url'])
 
     return render_template('index.html', images=images)
 
